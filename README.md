@@ -10,11 +10,11 @@ We used publicly available datasets that were not included in the Supplementary 
 * Roadmap Epigenomics: http://www.roadmapepigenomics.org/data/
 * phastCons: http://compgen.cshl.edu/phast/
 * Disease genes: For detailed reference for each paper, check Won et al. 
-- ASD: Iossifov et al., de Rubeis et al.
-- Schizophrenia: Fromer et al., Marshall et al.
-- Developmental delay: Deciphering Developmental Disorders Study
-- Constrained genes: Kosmicki et al.
-- Pathogenic missense variants: Samocha et al.
+  - ASD: Iossifov et al., de Rubeis et al.
+  - Schizophrenia: Fromer et al., Marshall et al.
+  - Developmental delay: Deciphering Developmental Disorders Study
+  - Constrained genes: Kosmicki et al.
+  - Pathogenic missense variants: Samocha et al.
 * Human vs. Rhesus Macaque expression difference: https://github.com/AllenBrainAtlas/DevRhesusLMD
 * ExAC: http://exac.broadinstitute.org/
 * BrainSpan: http://www.brainspan.org/rnaseq/search/index.html
