@@ -1,5 +1,5 @@
 # HAR
-Hyejung Won, edited on 02/20/2019
+Hyejung Won, edited on 02/20/2019 \n
 All codes should be run in r/3.5.0
 
 ## Data requirement
