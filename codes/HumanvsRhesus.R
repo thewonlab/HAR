@@ -129,25 +129,10 @@ source(file="../src/fConvertPcdtoEventScore.R")
 
 # Load genes of interest
 load("/proj/hyejunglab/chr/geneAnno_allgenes.rda")
-har = unlist(read.table("/proj/hyejunglab/evolution/HAR/FB_HARpromoter.txt"))
-hargene = unique(geneAnno1[geneAnno1$ensembl_gene_id %in% har, "hgnc_symbol"])
-hargene = hargene[hargene!=""]
-hargene = hargene[!is.na(hargene)]
-
-hugain = unlist(read.table("/proj/hyejunglab/evolution/Reillyetal2015Science_evolution_corticogenesis/Newanalysis/FB_evolpromoter.txt"))
-hugaingene = unique(geneAnno1[geneAnno1$ensembl_gene_id %in% hugain, "hgnc_symbol"])
-hugaingene = hugaingene[hugaingene!=""]
-hugaingene = hugaingene[!is.na(hugaingene)]
-
-hge = unlist(read.table("/proj/hyejunglab/evolution/Vermunt/map2gene/HGE_AB_promoter19_FDR.txt"))
-hgegene = unique(geneAnno1[geneAnno1$ensembl_gene_id %in% hge, "hgnc_symbol"])
-hgegene = hgegene[hgegene!=""]
-hgegene = hgegene[!is.na(hgegene)]
-
-hle = unlist(read.table("/proj/hyejunglab/evolution/Vermunt/map2gene/HLE_AB_promoter19_FDR.txt"))
-hlegene = unique(geneAnno1[geneAnno1$ensembl_gene_id %in% hle, "hgnc_symbol"])
-hlegene = hlegene[hlegene!=""]
-hlegene = hlegene[!is.na(hlegene)]
+hargene = unlist(read.table("HARgene.txt"))
+hugaingene = unlist(read.table("Hugaingene.txt"))
+hlegene = unlist(read.table("HLEgene.txt"))
+hgegene = unlist(read.table("HGEgene.txt"))
 
 # Load breakpoints for increasing genes in all species/regions
 bp.df <- read.csv(file = "../cache/dev_expr_species/species_region_bp.csv", 
@@ -177,47 +162,10 @@ bp.diff$hugain = ifelse(bp.diff$gene %in% hugaingene, "HGE:FB", "nHGE")
 bp.diff$hge = ifelse(bp.diff$gene %in% hgegene, "HGE:AB", "nHGE")
 bp.diff$hle = ifelse(bp.diff$gene %in% hlegene, "HLE:AB", "nHLE")
 
-pal1 <- brewer.pal(5, "Dark2")[c(1,3,2,4:5)]
-
-pdf("breakpoints.pdf", width=6, height=5)
-g1 <- ggplot(bp.diff, aes(h_m_escore)) + geom_density(aes(fill=factor(har)), alpha=0.5) + xlim(-0.7,0.7) + 
-  theme_bw() + theme(panel.grid.minor = element_blank()) +
-  scale_color_manual(values = pal1) +
-  scale_fill_manual(values = pal1) +
-  labs( y="Density", 
-        x=expression(Delta*" Developmental event score (Human-Macaque)"), 
-        title="Breakpoints")
-plot(g1)
-g2 <- ggplot(bp.diff, aes(h_m_escore)) + geom_density(aes(fill=factor(hugain)), alpha=0.5) + xlim(-0.7,0.7) + 
-  theme_bw() + theme(panel.grid.minor = element_blank()) +
-  scale_color_manual(values = pal1) +
-  scale_fill_manual(values = pal1) +
-  labs( y="Density", 
-        x=expression(Delta*" Developmental event score (Human-Macaque)"), 
-        title="Breakpoints")
-plot(g2)
-g3 <- ggplot(bp.diff, aes(h_m_escore)) + geom_density(aes(fill=factor(hge)), alpha=0.5) + xlim(-0.7,0.7) + 
-  theme_bw() + theme(panel.grid.minor = element_blank()) +
-  scale_color_manual(values = pal1) +
-  scale_fill_manual(values = pal1) +
-  labs( y="Density", 
-        x=expression(Delta*" Developmental event score (Human-Macaque)"), 
-        title="Breakpoints")
-plot(g3)
-g4 <- ggplot(bp.diff, aes(h_m_escore)) + geom_density(aes(fill=factor(hle)), alpha=0.5) + xlim(-0.7,0.7) + 
-  theme_bw() + theme(panel.grid.minor = element_blank()) +
-  scale_color_manual(values = pal1) +
-  scale_fill_manual(values = pal1) +
-  labs( y="Density", 
-        x=expression(Delta*" Developmental event score (Human-Macaque)"), 
-        title="Breakpoints")
-plot(g4)
-dev.off()
-
-wilcox.test(h_m_escore~har, data=bp.diff) # p-value = 0.00356
-wilcox.test(h_m_escore~hugain, data=bp.diff) # p-value = 0.8659
-wilcox.test(h_m_escore~hge, data=bp.diff) # p-value = 0.01603
-wilcox.test(h_m_escore~hle, data=bp.diff) # p-value = 0.221
+wilcox.test(h_m_escore~har, data=bp.diff) 
+wilcox.test(h_m_escore~hugain, data=bp.diff) 
+wilcox.test(h_m_escore~hge, data=bp.diff)
+wilcox.test(h_m_escore~hle, data=bp.diff)
 
 # Summarize genes that have significantly different breakpoints between human and macaque based on event scores
 diff.summary <- data.frame()
@@ -272,13 +220,3 @@ diff.summaryl[diff.summaryl$set == "human_early", "num_genes"] <- -num.genes
 
 diff.summaryl$region1 <- factor(diff.summaryl$region1, 
                                 levels = c("STR", "AM", "HP", "V1", "ACG"))
-
-ggplot(diff.summaryl, aes(x = region1, y = num_genes, fill = slope_after_breakpoint)) + 
-  facet_wrap(~ set) + 
-  geom_bar(stat = "identity", width = 0.7) + 
-  scale_fill_manual(values = c("grey", "blue", "red")) +
-  coord_flip() +
-  theme_bw() + 
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-  ylab("Number of genes") +
-  xlab("Brain region")
