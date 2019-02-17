@@ -6,8 +6,6 @@
 
 options(stringsAsFactors=F)
 FBfile = "HARgenes.txt" # Hi-C interacting genes for HARs
-mousednds = "mouse_dnds.rda"
-
 library(biomaRt)
 
 FP = unlist(read.table(FBfile))
