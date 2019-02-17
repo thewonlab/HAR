@@ -6,7 +6,7 @@
 options(stringsAsFactors = FALSE)
 library(biomaRt)
 hargene = unlist(read.table("HARgene.txt")) # evolutionary gene sets in hgnc symbol
-diseasegene = unlist(read.table("Diseasegene.txt")) # genes that are associated with a certain disorder
+targetgene = unlist(read.table("Targetgene.txt")) # genes that are associated with a certain disorder/cortical layer
 getinfo = c("ensembl_gene_id","hgnc_symbol","chromosome_name","start_position","end_position","strand","band","gene_biotype")
 mart = useMart(biomart="ENSEMBL_MART_ENSEMBL",dataset="hsapiens_gene_ensembl",host="feb2014.archive.ensembl.org") # Using Gencode v19 annotations
 geneAnno1 = getBM(attributes = getinfo,filters=c("chromosome_name"),values=c(seq(1,22,by=1),"X"),mart=mart)
@@ -27,8 +27,9 @@ metaMat[is.na(matchlist), listname] = 0
 metaMat = cbind(metaMat, rep(NA, nrow(metaMat)))
 listname = "Disease"
 colnames(metaMat)[ncol(metaMat)] = listname
-matchlist = match(rownames(metaMat), diseasegene)
+matchlist = match(rownames(metaMat), targetgene)
 metaMat[!is.na(matchlist), listname] = 1
 metaMat[is.na(matchlist), listname] = 0
 
-glm.out = glm(metaMat[,3]~metaMat[,2]+metaMat[,1],family=binomial) 
+glm.out = glm(metaMat[,2]~metaMat[,3]+metaMat[,1],family=binomial) # If exome length is used as covariates
+glm.out = glm(metaMat[,2]~metaMat[,3],family=binomial) # If there's no covariates: equivalent to Fisher's exact test
