@@ -21,4 +21,4 @@ We used publicly available datasets that were not included in the Supplementary 
 * Brain expression profiles: Kang et al., Nature (2011)
 
 ## Reference: 
-Won et al., Different classes of human evolved regulatory elements show distinct patterns of association with brain evolution and disease (2019)
+Won et al., Different human evolved regulatory elements show distinct patterns of association with brain evolution and disease.
