@@ -21,4 +21,4 @@ We used publicly available datasets that were not included in the Supplementary 
 * Brain expression profiles: Kang et al., Nature (2011)
 
 ## Reference: 
-Won et al., Different human evolved regulatory elements show distinct patterns of association with brain evolution and disease.
+Won et al., Nature Communications (2019) Human evolved regulatory elements modulate genes involved in cortical expansion and neurodevelopmental disease susceptibility.
